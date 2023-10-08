@@ -5,13 +5,11 @@ import matplotlib.pyplot as plt
 from coinpaprika import client as Coinpaprika
 from statsmodels.tsa.arima.model import ARIMA
 
-
 client = Coinpaprika.Client()
 
 raw = client.historical(
 "eth-ethereum", start="2023-01-11T00:00:00Z", limit=5000, interval='1m')
 df = pd.DataFrame(raw)
-
 
 df = df[['timestamp', 'price']]
 df.columns = ['date', 'price']
@@ -37,7 +35,6 @@ results = model.fit()
 _, ax = plt.subplots()
 
 ax.plot(df['price'], label='Exchange Rate')
-
 
 ax.set_xlabel('Date')
 ax.set_ylabel('Exchange Rate (ETH/UNUSD)')

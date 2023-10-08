@@ -2,6 +2,8 @@ import requests
 import json
 import pandas as pd
 
+# Uniswap V3 token data
+
 token_usdc_id = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
 
 url = 'https://api.thegraph.com/subgraphs/name/ianlapham/v3-minimal'
@@ -36,7 +38,4 @@ result['date'] = pd.to_datetime(result['date'], unit='s')
 result[["volumeUSD","totalValueLockedUSD","feesUSD","priceUSD","open","high","low","close"]] = result[["volumeUSD","totalValueLockedUSD","feesUSD","priceUSD","open","high","low","close"]].apply(pd.to_numeric)
 result['token_id'] = token_usdc_id
 result.to_csv("USDC_Data.csv")
-
-print(result.head())
-
 
