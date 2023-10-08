@@ -1,0 +1,3 @@
+[submodule "Hybrid_AMM_Code"]
+	path = Hybrid_AMM_Code
+	url = https://github.com/Blockhouse-Capital/Hybrid_AMM_Research.git
