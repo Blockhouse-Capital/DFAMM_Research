@@ -28,11 +28,8 @@ y = df['LogReturns']
 # Compute quadratic variation
 QV = []
 for i in range(10, len(y), 10):
-QV.append(np.sum(np.diff(y[i-10:i])**2))
+    QV.append(np.sum(np.diff(y[i-10:i])**2))
 QV = pd.Series(QV)
-
-
-
 
 # Standardize
 z = (QV - QV.mean()) / QV.std()
@@ -41,9 +38,7 @@ z = (QV - QV.mean()) / QV.std()
 model = ARIMA(z, order=(2,1,2))
 results = model.fit()
 
-
-print(results.summary())
-
+# result.summary() to see more details
 
 _, ax = plt.subplots()
 
@@ -65,7 +60,6 @@ ax2.plot(z, label='Quadratic Variation')
 ax2.set_xlabel('Periods')
 ax2.set_ylabel('Quadratic Variation (ETH/USD)')
 ax2.legend()
-
 
 #plt.show()
 
