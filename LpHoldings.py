@@ -2,9 +2,8 @@
 import requests
 import json
 import pandas as pd
-from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_KEY'))
+# spread = tickupper - ticklower 
 
 query = """
  query {
@@ -42,7 +41,6 @@ query = """
     transaction
     {
       id
-      timestamp
     }
     feeGrowthInside0LastX128
     feeGrowthInside1LastX128

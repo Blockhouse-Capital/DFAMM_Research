@@ -11,6 +11,7 @@ frames = []
 query = """query {
 tokenDayDatas (where : {token: "%s"}, orderBy: date, orderDirection: desc, skip:%d)
 {
+pool
 date
 volumeUSD
 totalValueLockedUSD
