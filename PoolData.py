@@ -3,8 +3,13 @@ import json
 import pandas as pd
 
 query = """
- query {
-  pools (orderBy: totalValueLockedUSD , orderDirection: desc , skip : %d) {
+{
+  pools(
+    orderBy: createdAtTimestamp,
+    orderDirection: desc,
+    where: {token0_: {symbol: "USDC"}, token1_: {symbol: "WETH"}},
+    skip: %d
+  ) {
     id
     totalValueLockedUSD
     token0 {
@@ -13,7 +18,6 @@ query = """
     token1 {
       symbol
     }
-    
     feeTier
     volumeUSD
     liquidity
@@ -22,20 +26,17 @@ query = """
     volumeToken0
     volumeToken1
     feesUSD
-	
     createdAtTimestamp
     createdAtBlockNumber
     totalValueLockedToken0
     totalValueLockedToken1
     tick
-  
   }
-
 }
-
 """
 
 url = 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3'
+
 
 frames = []
 for i in range(0,500,10):
