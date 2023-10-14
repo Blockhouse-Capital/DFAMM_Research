@@ -6,6 +6,7 @@ asn1crypto==1.5.1
 async-timeout==4.0.2
 asyncio==3.4.3
 attrs==23.1.0
+backoff==2.2.1
 backports.zoneinfo==0.2.1
 base58==2.1.1
 bech32==1.2.0
@@ -46,7 +47,8 @@ filelock==3.12.0
 flake8==6.0.0
 fonttools==4.43.1
 frozenlist==1.3.3
-graphql-core==2.3.1
+gql==3.4.1
+graphql-core==3.2.3
 grpcio==1.56.0
 grpcio-tools==1.56.0
 hdwallets==0.1.2
