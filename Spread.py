@@ -111,24 +111,25 @@ def compute_spread(POOL_ID):
   total_amount0 = 0
   total_amount1 = 0
   alpha = 0
-  amount0 = 0
-  amount1 = 0
+  adjusted_amount0 = 0
+  adjusted_amount1 = 0
 
   tick_lower_adj = []
   tick_upper_adj = []
+  num_positions = 0
   # Print all active positions
   for tick_lower, tick_upper, liquidity, id in sorted(positions):
+      num_positions += 1
 
       sa = tick_to_price(tick_lower / 2)
-      tick_lower_adj.append(sa)
+      tick_lower_adj.append(tick_lower)
       sb = tick_to_price(tick_upper / 2)
-      tick_upper_adj.append(sb)
+      tick_upper_adj.append(tick_upper)
 
       if tick_upper <= current_tick:
           # Only token1 locked
           amount1 = liquidity * (sb - sa)
           total_amount1 += amount1
-          alpha += amount0 + amount1 * adjusted_current_price
 
       elif tick_lower < current_tick < tick_upper:
           # Both tokens present
@@ -140,7 +141,6 @@ def compute_spread(POOL_ID):
           total_amount0 += amount0
           total_amount1 += amount1
           active_positions_liquidity += liquidity
-          alpha += amount0 + amount1 * adjusted_current_price
           print("  position {: 7d} in range [{},{}]: {:.2f} {} and {:.2f} {} at the current price".format(
                 id, tick_lower, tick_upper,
                 adjusted_amount0, token0, adjusted_amount1, token1))
@@ -148,7 +148,8 @@ def compute_spread(POOL_ID):
           # Only token0 locked
           amount0 = liquidity * (sb - sa) / (sa * sb)
           total_amount0 += amount0
-          alpha += amount0 + amount1 * adjusted_current_price
+      
+      alpha += adjusted_amount0 + adjusted_amount1 * adjusted_current_price
 
   print("In total (including inactive positions): {:.2f} {} and {:.2f} {}".format(
         total_amount0 / 10 ** decimals0, token0, total_amount1 / 10 ** decimals1, token1))
@@ -157,5 +158,5 @@ def compute_spread(POOL_ID):
     
   
   
-  return alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower_adj, tick_upper_adj, total_amount0, token0, total_amount1, token1
+  return num_positions, alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower_adj, tick_upper_adj, total_amount0 / 10 ** decimals0, token0, total_amount1 / 10 ** decimals1, token1
   
