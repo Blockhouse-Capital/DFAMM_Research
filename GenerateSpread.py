@@ -2,14 +2,13 @@ import pandas as pd
 from Spread import compute_spread
 import numpy as np
 
-df = pd.read_csv('Datasets/Positions.csv')
-
-column_names= ["pool_block", "pool_timestamp", "adjusted_current_price", "tick_lower", "tick_upper", "adjusted_amount0", "token0", "adjusted_amount1", "token1"]
+column_names= ["pool_block", "pool_timestamp", "adjusted_current_price", "tick_lower", "tick_upper", "adjusted_amount0", "token0", "adjusted_amount1", "token1", "feeTier", "num_positions"]
 spread_df = pd.DataFrame(columns=column_names)
 
-pools = ["0xe0554a476a092703abdb3ef35c80e0d76d32939f", "0x11c990d06df093fb7361356b16985051a65ebe2e",
-"0x5630ab57ee56ea296833d90cc7d96b6cb5bd2585",  "0x657979310186d5e48d6f2df2be8ca4259d178554",
-"0x7bea39867e4169dbe237d55c8242a8f2fcdcc387", "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640"]
+pools = ["0x07a72f8f6a29cf501e7226ca82264f9ee79380e7", "0x11c990d06df093fb7361356b16985051a65ebe2e", 
+"0x5630ab57ee56ea296833d90cc7d96b6cb5bd2585", "0x657979310186d5e48d6f2df2be8ca4259d178554", 
+"0x7bea39867e4169dbe237d55c8242a8f2fcdcc387", "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640", 
+"0xe0554a476a092703abdb3ef35c80e0d76d32939f"]
 # pools = ["0x07a72f8f6a29cf501e7226ca82264f9ee79380e7", "0x11c990d06df093fb7361356b16985051a65ebe2e", 
 # "0x5630ab57ee56ea296833d90cc7d96b6cb5bd2585", "0x657979310186d5e48d6f2df2be8ca4259d178554", 
 # "0x7bea39867e4169dbe237d55c8242a8f2fcdcc387", "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640", 
@@ -17,7 +16,7 @@ pools = ["0xe0554a476a092703abdb3ef35c80e0d76d32939f", "0x11c990d06df093fb736135
 total_positions = 0
 
 for id in pools:
-    num_positions, alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower, tick_upper, adjusted_amount0, token0, adjusted_amount1, token1 = compute_spread(id)
+    fee_tier, num_positions, alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower, tick_upper, adjusted_amount0, token0, adjusted_amount1, token1 = compute_spread(id)
     spread_df.loc[id,"pool_block"] = pool_block
     spread_df.loc[id,"pool_timestamp"] = pool_timestamp
     spread_df.loc[id,"adjusted_current_price"] = adjusted_current_price
@@ -27,10 +26,13 @@ for id in pools:
     spread_df.loc[id,"token0"] = token0
     spread_df.loc[id,"adjusted_amount1"] = adjusted_amount1
     spread_df.loc[id,"token1"] = token1
-    spread_df.loc[id,"alpha"] = alpha
+    spread_df.loc[id,"alpha"] = sum(alpha)
+
+    spread_df.loc[id,"feeTier"] = fee_tier
+    spread_df.loc[id,"num_positions"] = num_positions
 
     total_positions += num_positions
 
-# 2903 total positions
+# 2908 total positions
 
 spread_df.to_csv("Spread_Data.csv")

@@ -65,6 +65,7 @@ def compute_spread(POOL_ID):
       pool = response['pools'][0]
       pool_liquidity = int(pool["liquidity"])
       pool_block = pool["createdAtBlockNumber"]
+      fee_tier = pool["feeTier"]
       pool_timestamp = pool["createdAtTimestamp"]
       current_tick = int(pool["tick"])
 
@@ -116,6 +117,7 @@ def compute_spread(POOL_ID):
 
   tick_lower_adj = []
   tick_upper_adj = []
+  alpha = [] 
   num_positions = 0
   # Print all active positions
   for tick_lower, tick_upper, liquidity, id in sorted(positions):
@@ -149,7 +151,7 @@ def compute_spread(POOL_ID):
           amount0 = liquidity * (sb - sa) / (sa * sb)
           total_amount0 += amount0
       
-      alpha += adjusted_amount0 + adjusted_amount1 * adjusted_current_price
+      alpha.append(adjusted_amount0 + adjusted_amount1 * adjusted_current_price)
 
   print("In total (including inactive positions): {:.2f} {} and {:.2f} {}".format(
         total_amount0 / 10 ** decimals0, token0, total_amount1 / 10 ** decimals1, token1))
@@ -158,5 +160,5 @@ def compute_spread(POOL_ID):
     
   
   
-  return num_positions, alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower_adj, tick_upper_adj, total_amount0 / 10 ** decimals0, token0, total_amount1 / 10 ** decimals1, token1
+  return fee_tier, num_positions, alpha, pool_block, pool_timestamp, adjusted_current_price, tick_lower_adj, tick_upper_adj, total_amount0 / 10 ** decimals0, token0, total_amount1 / 10 ** decimals1, token1
   
